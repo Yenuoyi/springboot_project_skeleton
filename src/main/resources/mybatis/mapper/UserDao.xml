@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.skeleton.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.example.skeleton.domain.UserDTO" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, name, password, create_time
+    </sql>
+
+    <sql id="where_fragement">
+        where 1 = 1
+        <if test="record != null">
+            <if test="record.id != null and record.id != ''">
+                and id = #{record.id}
+            </if>
+            <if test="record.name != null and record.name != ''">
+                and name = #{record.name}
+            </if>
+            <if test="record.password != null and record.password != ''">
+                and password = #{record.password}
+            </if>
+            <if test="record.createTime != null and record.createTime != ''">
+                and create_time = #{record.createTime}
+            </if>
+        </if>
+    </sql>
+
+    <!-- 分页专用 -->
+    <sql id="pagination_tail" >
+        limit #{pager.pageOffset} , #{pager.rows}
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        <include refid="where_fragement"/>
+        ORDER BY id desc
+        <if test="pager != null" >
+            <include refid="pagination_tail" />
+        </if>
+    </select>
+
+    <select id="countTotal" resultType="Long">
+        select
+        count(1)
+        from user
+        <include refid="where_fragement"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.skeleton.domain.UserDTO" >
+        insert into user (name,password,create_time)
+        values (#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.example.skeleton.domain.UserDTO" >
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.skeleton.domain.UserDTO" >
+        update user
+        <set >
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password =  #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.example.skeleton.domain.UserDTO" >
+        update user
+        set name = #{name,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
