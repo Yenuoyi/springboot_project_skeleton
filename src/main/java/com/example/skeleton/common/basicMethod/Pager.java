@@ -1,6 +1,7 @@
-package com.example.skeleton.common;
+package com.example.skeleton.common.basicMethod;
 
 import com.github.pagehelper.PageHelper;
+
 import java.io.Serializable;
 import java.util.List;
 

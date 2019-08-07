@@ -1,11 +1,17 @@
 package com.example.skeleton.config.security;
 
+import com.example.skeleton.common.Role;
+import com.example.skeleton.config.PersonConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,18 +19,22 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
+import javax.servlet.Filter;
+import java.util.List;
 
+/**
+ * @author yebing
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-    @Resource
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    @Resource
-    private AuthenticationFailureHandlerImpl authenticationFailureHandler;
+
     @Resource
     private UserDetailsService userDetailsService;
     @Resource
     private PasswordEncoder passwordEncoder;
+    @Resource
+    private CustomAuthenticationFilter customAuthenticationFilter;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -32,58 +42,81 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()                         //授权配置
-                .antMatchers("/login").permitAll()
-                .antMatchers("/front/**").permitAll()
-                .antMatchers("/admin/languageClassificationController/**").hasAnyRole("STUDENT","TEACHER","ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/timer/**").permitAll()
+                .antMatchers("/user/selectOne").hasRole(Role.USER)
+                .antMatchers("/admin/languageClassificationController/**").hasAnyRole(Role.ADMIN,Role.USER)
+                .antMatchers("/admin/**").hasRole(Role.ADMIN)
                 .anyRequest()     // 所有请求
                 .authenticated(); // 所有请求都进行权限
 
         http
                 .formLogin()
                 .loginPage("/front/html/login.html")
-                .loginProcessingUrl("/login")//处理登录post请求接口
                 .and()
                 .csrf().disable();
-        http.httpBasic();                                //必不可少，否则自定义UsernamePasswordAuthenticationFilter无效
+
 
         http
                 .logout()
-                .logoutUrl("/logout") //自定义登出api，无需自己实现
+                //自定义登出api，无需自己实现
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/front/html/login.html")
                 .permitAll()
-                .invalidateHttpSession(true)
-                .and()
-                .authenticationProvider(this.authenticationProvider());
+                .invalidateHttpSession(true);
+
+        /*权限认证*/
+        http.authenticationProvider(this.authenticationProvider());
         http
-                .addFilterAt(this.customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //自定义登录退出处理器
+        http.logout().logoutSuccessHandler(new CustomUrlLogoutSuccessHandlerImpl());
 
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider
-                = new DaoAuthenticationProvider(); // 创建DaoAuthenticationProvider实例
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder);
         authProvider.setUserDetailsService(userDetailsService);
         return authProvider;
     }
-    //注册自定义的UsernamePasswordAuthenticationFilter
-    @Bean
+
+    @Bean(name = "authenticationManager")
+    public AuthenticationManager createAuthenticationManager() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    /**
+     * 自定义登录拦截过滤器，不包含密码校验等
+     * @return
+     * @throws Exception
+     */
+/*    @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
-//        filter.setFilterProcessesUrl("/login/self");
-
         //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
-        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationManager(createAuthenticationManager());
         return filter;
-    }
+    }*/
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         return mappingJackson2HttpMessageConverter;
+    }
+
+    @AutoConfigureAfter(WebSecurityConfiguration.class)
+    @Configuration
+    public static class show {
+
+        @Resource(name = "springSecurityFilterChain")
+        private Filter springSecurityFilterChain;
+
+        @Bean
+        public Object object() {
+            System.out.println(springSecurityFilterChain);
+            return new Object();
+        }
     }
 }

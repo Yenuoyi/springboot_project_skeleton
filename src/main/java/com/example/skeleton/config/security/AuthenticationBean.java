@@ -1,5 +1,9 @@
 package com.example.skeleton.config.security;
 
+/**
+ * 自定义接受JSON登录请求实体
+ * @author yebing
+ */
 public class AuthenticationBean {
     private String username;
     private String password;

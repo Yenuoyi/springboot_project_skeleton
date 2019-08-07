@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.skeleton.dao.OnlineBugDao" >
+  <resultMap id="BaseResultMap" type="com.example.skeleton.domain.OnlineBugDTO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="workspace_id" property="workspaceId" jdbcType="VARCHAR" />
+    <result column="bug_tid" property="bugTid" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="reporter" property="reporter" jdbcType="VARCHAR" />
+    <result column="current_owner" property="currentOwner" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="flows" property="flows" jdbcType="VARCHAR" />
+    <result column="severity" property="severity" jdbcType="VARCHAR" />
+    <result column="fixer" property="fixer" jdbcType="VARCHAR" />
+    <result column="te" property="te" jdbcType="VARCHAR" />
+    <result column="de" property="de" jdbcType="VARCHAR" />
+    <result column="participator" property="participator" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="site" property="site" jdbcType="VARCHAR" />
+    <result column="resolution" property="resolution" jdbcType="VARCHAR" />
+    <result column="bug_type" property="bugType" jdbcType="VARCHAR" />
+    <result column="in_progress_time" property="inProgressTime" jdbcType="TIMESTAMP" />
+    <result column="closed" property="closed" jdbcType="TIMESTAMP" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="creator_dept" property="creatorDept" jdbcType="VARCHAR" />
+    <result column="frequency" property="frequency" jdbcType="VARCHAR" />
+    <result column="browser" property="browser" jdbcType="VARCHAR" />
+    <result column="first_finder" property="firstFinder" jdbcType="VARCHAR" />
+    <result column="solution" property="solution" jdbcType="VARCHAR" />
+    <result column="analytics" property="analytics" jdbcType="VARCHAR" />
+    <result column="solve_time" property="solveTime" jdbcType="TIMESTAMP" />
+    <result column="find_time" property="findTime" jdbcType="TIMESTAMP" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="cate" property="cate" jdbcType="VARCHAR" />
+    <result column="cp_to_space_id" property="cpToSpaceId" jdbcType="VARCHAR" />
+    <result column="cp_to_space_name" property="cpToSpaceName" jdbcType="VARCHAR" />
+    <result column="cp_to_bug_id" property="cpToBugId" jdbcType="VARCHAR" />
+    <result column="cp_to_bug_url" property="cpToBugUrl" jdbcType="VARCHAR" />
+    <result column="to_story_id" property="toStoryId" jdbcType="VARCHAR" />
+    <result column="to_story_space_id" property="toStorySpaceId" jdbcType="VARCHAR" />
+    <result column="to_story_url" property="toStoryUrl" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="error_level" property="errorLevel" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, workspace_id, bug_tid, status, reporter, current_owner, created, title, flows, 
+    severity, fixer, te, de, participator, source, site, resolution, bug_type, in_progress_time, 
+    closed, url, update_time, reject_reason, creator_dept, frequency, browser, first_finder, 
+    solution, analytics, solve_time, find_time, module, cate, cp_to_space_id, cp_to_space_name, 
+    cp_to_bug_id, cp_to_bug_url, to_story_id, to_story_space_id, to_story_url, deleted, 
+    error_level
+  </sql>
+
+  <sql id="where_fragement">
+    where 1 = 1
+    <if test="record != null">
+      <if test="record.workspaceId != null" >
+        and workspace_id = #{record.workspaceId,jdbcType=VARCHAR}
+      </if>
+      <if test="record.bugTid != null" >
+        and bug_tid = #{record.bugTid,jdbcType=VARCHAR}
+      </if>
+      <if test="record.status != null" >
+        and status = #{record.status,jdbcType=VARCHAR}
+      </if>
+      <if test="record.statusList != null" >
+        and status in
+        <foreach collection="record.statusList" index="index" item="item" open="(" close=")" separator=",">
+          #{item,jdbcType=VARCHAR}
+        </foreach>
+      </if>
+      <if test="record.reporter != null" >
+        and reporter = #{record.reporter,jdbcType=VARCHAR}
+      </if>
+      <if test="record.currentOwner != null" >
+        and current_owner = #{record.currentOwner,jdbcType=VARCHAR}
+      </if>
+      <if test="record.created != null" >
+        and created = #{record.created,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.title != null" >
+        and title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flows != null" >
+        and flows = #{record.flows,jdbcType=VARCHAR}
+      </if>
+      <if test="record.severity != null" >
+        and severity = #{record.severity,jdbcType=VARCHAR}
+      </if>
+      <if test="record.fixer != null" >
+        and fixer = #{record.fixer,jdbcType=VARCHAR}
+      </if>
+      <if test="record.te != null" >
+        and te = #{record.te,jdbcType=VARCHAR}
+      </if>
+      <if test="record.de != null" >
+        and de = #{record.de,jdbcType=VARCHAR}
+      </if>
+      <if test="record.participator != null" >
+        and participator = #{record.participator,jdbcType=VARCHAR}
+      </if>
+      <if test="record.source != null" >
+        and source = #{record.source,jdbcType=VARCHAR}
+      </if>
+      <if test="record.site != null" >
+        and site = #{record.site,jdbcType=VARCHAR}
+      </if>
+      <if test="record.resolution != null" >
+        and resolution = #{record.resolution,jdbcType=VARCHAR}
+      </if>
+      <if test="record.bugType != null" >
+        and bug_type = #{record.bugType,jdbcType=VARCHAR}
+      </if>
+      <if test="record.inProgressTime != null" >
+        and in_progress_time = #{record.inProgressTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.closed != null" >
+        and closed = #{record.closed,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.url != null" >
+        and url = #{record.url,jdbcType=VARCHAR}
+      </if>
+      <if test="record.updateTime != null" >
+        and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.rejectReason != null" >
+        and reject_reason = #{record.rejectReason,jdbcType=VARCHAR}
+      </if>
+      <if test="record.creatorDept != null" >
+        and creator_dept = #{record.creatorDept,jdbcType=VARCHAR}
+      </if>
+      <if test="record.frequency != null" >
+        and frequency = #{record.frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.browser != null" >
+        and browser = #{record.browser,jdbcType=VARCHAR}
+      </if>
+      <if test="record.firstFinder != null" >
+        and first_finder = #{record.firstFinder,jdbcType=VARCHAR}
+      </if>
+      <if test="record.solution != null" >
+        and solution = #{record.solution,jdbcType=VARCHAR}
+      </if>
+      <if test="record.analytics != null" >
+        and analytics = #{record.analytics,jdbcType=VARCHAR}
+      </if>
+      <if test="record.solveTime != null" >
+        and solve_time = #{record.solveTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.findTime != null" >
+        and find_time = #{record.findTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.module != null" >
+        and module = #{record.module,jdbcType=VARCHAR}
+      </if>
+      <if test="record.cate != null" >
+        and cate = #{record.cate,jdbcType=VARCHAR}
+      </if>
+      <if test="record.cpToSpaceId != null" >
+        and cp_to_space_id = #{record.cpToSpaceId,jdbcType=VARCHAR}
+      </if>
+      <if test="record.cpToSpaceName != null" >
+        and cp_to_space_name = #{record.cpToSpaceName,jdbcType=VARCHAR}
+      </if>
+      <if test="record.cpToBugId != null" >
+        and cp_to_bug_id = #{record.cpToBugId,jdbcType=VARCHAR}
+      </if>
+      <if test="record.cpToBugUrl != null" >
+        and cp_to_bug_url = #{record.cpToBugUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="record.toStoryId != null" >
+        and to_story_id = #{record.toStoryId,jdbcType=VARCHAR}
+      </if>
+      <if test="record.toStorySpaceId != null" >
+        and to_story_space_id = #{record.toStorySpaceId,jdbcType=VARCHAR}
+      </if>
+      <if test="record.toStoryUrl != null" >
+        and to_story_url = #{record.toStoryUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="record.deleted != null" >
+        and deleted = #{record.deleted,jdbcType=INTEGER}
+      </if>
+      <if test="record.errorLevel != null" >
+        and error_level = #{record.errorLevel,jdbcType=VARCHAR}
+      </if>
+    </if>
+  </sql>
+
+  <!-- 分页专用 -->
+  <sql id="pagination_tail" >
+        limit #{pager.pageOffset} , #{pager.rows}
+   </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from online_bug
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from online_bug
+    <include refid="where_fragement"/>
+    ORDER BY id desc
+    <if test="pager != null" >
+      <include refid="pagination_tail" />
+    </if>
+  </select>
+
+  <select id="countTotal" resultType="Long">
+    select
+    count(1)
+    from online_bug
+    <include refid="where_fragement"/>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from online_bug
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.example.skeleton.domain.OnlineBugDTO" >
+    insert into online_bug (id, workspace_id, bug_tid, 
+      status, reporter, current_owner, 
+      created, title, flows, 
+      severity, fixer, te, 
+      de, participator, source, 
+      site, resolution, bug_type, 
+      in_progress_time, closed, url, 
+      update_time, reject_reason, creator_dept, 
+      frequency, browser, first_finder, 
+      solution, analytics, solve_time, 
+      find_time, module, cate, 
+      cp_to_space_id, cp_to_space_name, cp_to_bug_id, 
+      cp_to_bug_url, to_story_id, to_story_space_id, 
+      to_story_url, deleted, error_level
+      )
+    values (#{id,jdbcType=INTEGER}, #{workspaceId,jdbcType=VARCHAR}, #{bugTid,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{reporter,jdbcType=VARCHAR}, #{currentOwner,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{flows,jdbcType=VARCHAR}, 
+      #{severity,jdbcType=VARCHAR}, #{fixer,jdbcType=VARCHAR}, #{te,jdbcType=VARCHAR}, 
+      #{de,jdbcType=VARCHAR}, #{participator,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{site,jdbcType=VARCHAR}, #{resolution,jdbcType=VARCHAR}, #{bugType,jdbcType=VARCHAR}, 
+      #{inProgressTime,jdbcType=TIMESTAMP}, #{closed,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{rejectReason,jdbcType=VARCHAR}, #{creatorDept,jdbcType=VARCHAR}, 
+      #{frequency,jdbcType=VARCHAR}, #{browser,jdbcType=VARCHAR}, #{firstFinder,jdbcType=VARCHAR}, 
+      #{solution,jdbcType=VARCHAR}, #{analytics,jdbcType=VARCHAR}, #{solveTime,jdbcType=TIMESTAMP}, 
+      #{findTime,jdbcType=TIMESTAMP}, #{module,jdbcType=VARCHAR}, #{cate,jdbcType=VARCHAR}, 
+      #{cpToSpaceId,jdbcType=VARCHAR}, #{cpToSpaceName,jdbcType=VARCHAR}, #{cpToBugId,jdbcType=VARCHAR}, 
+      #{cpToBugUrl,jdbcType=VARCHAR}, #{toStoryId,jdbcType=VARCHAR}, #{toStorySpaceId,jdbcType=VARCHAR}, 
+      #{toStoryUrl,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER}, #{errorLevel,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.example.skeleton.domain.OnlineBugDTO" >
+    insert into online_bug
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="workspaceId != null" >
+        workspace_id,
+      </if>
+      <if test="bugTid != null" >
+        bug_tid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="reporter != null" >
+        reporter,
+      </if>
+      <if test="currentOwner != null" >
+        current_owner,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="flows != null" >
+        flows,
+      </if>
+      <if test="severity != null" >
+        severity,
+      </if>
+      <if test="fixer != null" >
+        fixer,
+      </if>
+      <if test="te != null" >
+        te,
+      </if>
+      <if test="de != null" >
+        de,
+      </if>
+      <if test="participator != null" >
+        participator,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="site != null" >
+        site,
+      </if>
+      <if test="resolution != null" >
+        resolution,
+      </if>
+      <if test="bugType != null" >
+        bug_type,
+      </if>
+      <if test="inProgressTime != null" >
+        in_progress_time,
+      </if>
+      <if test="closed != null" >
+        closed,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason,
+      </if>
+      <if test="creatorDept != null" >
+        creator_dept,
+      </if>
+      <if test="frequency != null" >
+        frequency,
+      </if>
+      <if test="browser != null" >
+        browser,
+      </if>
+      <if test="firstFinder != null" >
+        first_finder,
+      </if>
+      <if test="solution != null" >
+        solution,
+      </if>
+      <if test="analytics != null" >
+        analytics,
+      </if>
+      <if test="solveTime != null" >
+        solve_time,
+      </if>
+      <if test="findTime != null" >
+        find_time,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+      <if test="cate != null" >
+        cate,
+      </if>
+      <if test="cpToSpaceId != null" >
+        cp_to_space_id,
+      </if>
+      <if test="cpToSpaceName != null" >
+        cp_to_space_name,
+      </if>
+      <if test="cpToBugId != null" >
+        cp_to_bug_id,
+      </if>
+      <if test="cpToBugUrl != null" >
+        cp_to_bug_url,
+      </if>
+      <if test="toStoryId != null" >
+        to_story_id,
+      </if>
+      <if test="toStorySpaceId != null" >
+        to_story_space_id,
+      </if>
+      <if test="toStoryUrl != null" >
+        to_story_url,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="errorLevel != null" >
+        error_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="workspaceId != null" >
+        #{workspaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="bugTid != null" >
+        #{bugTid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="reporter != null" >
+        #{reporter,jdbcType=VARCHAR},
+      </if>
+      <if test="currentOwner != null" >
+        #{currentOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="flows != null" >
+        #{flows,jdbcType=VARCHAR},
+      </if>
+      <if test="severity != null" >
+        #{severity,jdbcType=VARCHAR},
+      </if>
+      <if test="fixer != null" >
+        #{fixer,jdbcType=VARCHAR},
+      </if>
+      <if test="te != null" >
+        #{te,jdbcType=VARCHAR},
+      </if>
+      <if test="de != null" >
+        #{de,jdbcType=VARCHAR},
+      </if>
+      <if test="participator != null" >
+        #{participator,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="site != null" >
+        #{site,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="bugType != null" >
+        #{bugType,jdbcType=VARCHAR},
+      </if>
+      <if test="inProgressTime != null" >
+        #{inProgressTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closed != null" >
+        #{closed,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorDept != null" >
+        #{creatorDept,jdbcType=VARCHAR},
+      </if>
+      <if test="frequency != null" >
+        #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="browser != null" >
+        #{browser,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFinder != null" >
+        #{firstFinder,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null" >
+        #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="analytics != null" >
+        #{analytics,jdbcType=VARCHAR},
+      </if>
+      <if test="solveTime != null" >
+        #{solveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="findTime != null" >
+        #{findTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="cate != null" >
+        #{cate,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToSpaceId != null" >
+        #{cpToSpaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToSpaceName != null" >
+        #{cpToSpaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToBugId != null" >
+        #{cpToBugId,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToBugUrl != null" >
+        #{cpToBugUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="toStoryId != null" >
+        #{toStoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="toStorySpaceId != null" >
+        #{toStorySpaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="toStoryUrl != null" >
+        #{toStoryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="errorLevel != null" >
+        #{errorLevel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.skeleton.domain.OnlineBugDTO" >
+    update online_bug
+    <set >
+      <if test="workspaceId != null" >
+        workspace_id = #{workspaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="bugTid != null" >
+        bug_tid = #{bugTid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="reporter != null" >
+        reporter = #{reporter,jdbcType=VARCHAR},
+      </if>
+      <if test="currentOwner != null" >
+        current_owner = #{currentOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="flows != null" >
+        flows = #{flows,jdbcType=VARCHAR},
+      </if>
+      <if test="severity != null" >
+        severity = #{severity,jdbcType=VARCHAR},
+      </if>
+      <if test="fixer != null" >
+        fixer = #{fixer,jdbcType=VARCHAR},
+      </if>
+      <if test="te != null" >
+        te = #{te,jdbcType=VARCHAR},
+      </if>
+      <if test="de != null" >
+        de = #{de,jdbcType=VARCHAR},
+      </if>
+      <if test="participator != null" >
+        participator = #{participator,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="site != null" >
+        site = #{site,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null" >
+        resolution = #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="bugType != null" >
+        bug_type = #{bugType,jdbcType=VARCHAR},
+      </if>
+      <if test="inProgressTime != null" >
+        in_progress_time = #{inProgressTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closed != null" >
+        closed = #{closed,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorDept != null" >
+        creator_dept = #{creatorDept,jdbcType=VARCHAR},
+      </if>
+      <if test="frequency != null" >
+        frequency = #{frequency,jdbcType=VARCHAR},
+      </if>
+      <if test="browser != null" >
+        browser = #{browser,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFinder != null" >
+        first_finder = #{firstFinder,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null" >
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="analytics != null" >
+        analytics = #{analytics,jdbcType=VARCHAR},
+      </if>
+      <if test="solveTime != null" >
+        solve_time = #{solveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="findTime != null" >
+        find_time = #{findTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="module != null" >
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="cate != null" >
+        cate = #{cate,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToSpaceId != null" >
+        cp_to_space_id = #{cpToSpaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToSpaceName != null" >
+        cp_to_space_name = #{cpToSpaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToBugId != null" >
+        cp_to_bug_id = #{cpToBugId,jdbcType=VARCHAR},
+      </if>
+      <if test="cpToBugUrl != null" >
+        cp_to_bug_url = #{cpToBugUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="toStoryId != null" >
+        to_story_id = #{toStoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="toStorySpaceId != null" >
+        to_story_space_id = #{toStorySpaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="toStoryUrl != null" >
+        to_story_url = #{toStoryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="errorLevel != null" >
+        error_level = #{errorLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.example.skeleton.domain.OnlineBugDTO" >
+    update online_bug
+    set workspace_id = #{workspaceId,jdbcType=VARCHAR},
+      bug_tid = #{bugTid,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      reporter = #{reporter,jdbcType=VARCHAR},
+      current_owner = #{currentOwner,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      flows = #{flows,jdbcType=VARCHAR},
+      severity = #{severity,jdbcType=VARCHAR},
+      fixer = #{fixer,jdbcType=VARCHAR},
+      te = #{te,jdbcType=VARCHAR},
+      de = #{de,jdbcType=VARCHAR},
+      participator = #{participator,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      site = #{site,jdbcType=VARCHAR},
+      resolution = #{resolution,jdbcType=VARCHAR},
+      bug_type = #{bugType,jdbcType=VARCHAR},
+      in_progress_time = #{inProgressTime,jdbcType=TIMESTAMP},
+      closed = #{closed,jdbcType=TIMESTAMP},
+      url = #{url,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      creator_dept = #{creatorDept,jdbcType=VARCHAR},
+      frequency = #{frequency,jdbcType=VARCHAR},
+      browser = #{browser,jdbcType=VARCHAR},
+      first_finder = #{firstFinder,jdbcType=VARCHAR},
+      solution = #{solution,jdbcType=VARCHAR},
+      analytics = #{analytics,jdbcType=VARCHAR},
+      solve_time = #{solveTime,jdbcType=TIMESTAMP},
+      find_time = #{findTime,jdbcType=TIMESTAMP},
+      module = #{module,jdbcType=VARCHAR},
+      cate = #{cate,jdbcType=VARCHAR},
+      cp_to_space_id = #{cpToSpaceId,jdbcType=VARCHAR},
+      cp_to_space_name = #{cpToSpaceName,jdbcType=VARCHAR},
+      cp_to_bug_id = #{cpToBugId,jdbcType=VARCHAR},
+      cp_to_bug_url = #{cpToBugUrl,jdbcType=VARCHAR},
+      to_story_id = #{toStoryId,jdbcType=VARCHAR},
+      to_story_space_id = #{toStorySpaceId,jdbcType=VARCHAR},
+      to_story_url = #{toStoryUrl,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=INTEGER},
+      error_level = #{errorLevel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,4 +1,4 @@
-package com.example.skeleton.common.CodeUtil;
+package com.example.skeleton.common.codeUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +12,7 @@ import java.util.Random;
 public class CodeImageUtil {
     private BufferedImage image; // 图像
     private String str; // 验证码
+
     public BufferedImage getImage() {
         return this.image;
     }
@@ -22,14 +23,15 @@ public class CodeImageUtil {
 
     /**
      * 图像初始化
-     * @param width 图像宽度
+     *
+     * @param width  图像宽度
      * @param height 图像高度
      */
     public void init(int width, int height) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         // 获取图形上下文
         Graphics graphics = image.getGraphics();
-        setBackground(graphics,width,height);
+        setBackground(graphics, width, height);
         // 取随机产生的认证码(4位数字)
         StringBuffer sRand = new StringBuffer();
         // 设定字体
@@ -41,7 +43,7 @@ public class CodeImageUtil {
             // 将认证码显示到图象中
             graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             // 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
-            graphics.drawString(rand, 20 * i, height-10);
+            graphics.drawString(rand, 20 * i, height - 10);
         }
         graphics.dispose();
         this.str = sRand.toString();
@@ -50,11 +52,12 @@ public class CodeImageUtil {
 
     /**
      * 设置图片背景
+     *
      * @param graphics
      * @param width
      * @param height
      */
-    private void setBackground(Graphics graphics, int width, int height){
+    private void setBackground(Graphics graphics, int width, int height) {
         // 生成随机类
         Random random = new Random();
         // 设定背景色
@@ -70,8 +73,10 @@ public class CodeImageUtil {
             graphics.drawLine(x, y, x + xl, y + yl);
         }
     }
+
     /**
      * 给定范围获得随机颜色
+     *
      * @return
      */
     private Color getRandColor() {

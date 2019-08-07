@@ -1,4 +1,4 @@
-package com.example.skeleton.common.CodeUtil;
+package com.example.skeleton.common.codeUtil;
 
 /**
  * @Author: yebing

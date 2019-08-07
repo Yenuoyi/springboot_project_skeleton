@@ -1,13 +1,13 @@
-package com.example.skeleton.common;
+package com.example.skeleton.common.basicMethod;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class  DataUtil<T> {
+public class DataUtil<T> {
     List<T> list = new ArrayList<>();
     Pager pager = new Pager();
 
-    public List<?> getList() {
+    public List<T> getList() {
         return list;
     }
 

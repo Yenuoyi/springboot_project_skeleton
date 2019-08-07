@@ -9,18 +9,18 @@ import java.io.Serializable;
  */
 public class Millionaire implements Serializable {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         int year = 0;
         double f = 1000000;
         double p = 100000;
         double r = 0.05;
-        for(int i=1;;i++){
-            double n = Math.pow(f/p,1.0/i);
-            if(n<=(1+r)){
+        for (int i = 1; ; i++) {
+            double n = Math.pow(f / p, 1.0 / i);
+            if (n <= (1 + r)) {
                 year = i;
                 break;
             }
         }
-        System.out.println(year+"年后成为百万富翁！");
+        System.out.println(year + "年后成为百万富翁！");
     }
 }

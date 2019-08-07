@@ -1,4 +1,4 @@
-package com.example.skeleton.common;
+package com.example.skeleton.common.basicMethod;
 
 import java.io.Serializable;
 import java.util.ArrayList;

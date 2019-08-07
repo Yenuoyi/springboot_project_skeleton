@@ -1,4 +1,4 @@
-package com.example.skeleton.common.ImageUtil;
+package com.example.skeleton.common.imageUtil;
 
 import java.io.IOException;
 
@@ -8,23 +8,23 @@ import java.io.IOException;
  * </p>
  */
 public class ImgCompressUtil {
-	
-	private ImgCompressUtil(){
-		
-	}
-	
+
+    private ImgCompressUtil() {
+
+    }
+
     /**
-     * @param filePath 源图片路径【图片全路径】
+     * @param filePath        源图片路径【图片全路径】
      * @param compressionPath 生成图片路径【图片全路径】
-     * @param width 宽度
-     * @param height 高度
+     * @param width           宽度
+     * @param height          高度
      */
-    public static void comparess(String filePath,String compressionPath,int width,int height) {
-        try{
-            ImgCompress imgCom = new ImgCompress(filePath,compressionPath);
+    public static void comparess(String filePath, String compressionPath, int width, int height) {
+        try {
+            ImgCompress imgCom = new ImgCompress(filePath, compressionPath);
             imgCom.resizeFix(width, height);
-        }catch (IOException e){
-            throw new RuntimeException("压缩图片失败",e);
+        } catch (IOException e) {
+            throw new RuntimeException("压缩图片失败", e);
         }
     }
 }

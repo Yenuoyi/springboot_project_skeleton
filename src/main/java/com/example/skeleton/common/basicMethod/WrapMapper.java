@@ -1,4 +1,4 @@
-package com.example.skeleton.common;
+package com.example.skeleton.common.basicMethod;
 
 public class WrapMapper {
     private WrapMapper() {
@@ -13,7 +13,7 @@ public class WrapMapper {
     }
 
     public static <E> Wrapper<E> wrap(int code) {
-        return wrap(code, (String)null);
+        return wrap(code, (String) null);
     }
 
     public static <E> Wrapper<E> wrap(Exception e) {

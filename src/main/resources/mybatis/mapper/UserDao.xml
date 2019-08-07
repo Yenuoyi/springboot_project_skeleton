@@ -42,6 +42,13 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectOneByName" resultMap="BaseResultMap" parameterType="string" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where name = #{name,jdbcType=VARCHAR} LIMIT 1
+    </select>
+
     <select id="selectList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />

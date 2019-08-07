@@ -1,10 +1,7 @@
 package com.example.skeleton.common.basicMethod;
 
-import com.example.skeleton.common.DataUtil;
-import com.example.skeleton.common.ExecuteResult;
-import com.example.skeleton.common.WrapMapper;
-import com.example.skeleton.common.Wrapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-public class BasicController<T extends BasicDao,D extends BasicDTO> {
-    protected Logger logger = Logger.getLogger(this.getClass());
+/**
+ * @author yebing
+ */
+public class BasicController<S extends BasicService,E extends BasicDTO> {
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    protected  BasicService<T,D> basicService;
+    protected  S basicService;
     @RequestMapping(value = "/deleteByPrimaryKey",method={RequestMethod.POST})
-    public Wrapper<?> deleteByPrimaryKey(@RequestBody D record){
+    public Wrapper<?> deleteByPrimaryKey(@RequestBody E record){
         ExecuteResult<Integer> executeResult = basicService.deleteByPrimaryKey(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
@@ -26,7 +26,7 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/insert",method={RequestMethod.POST})
-    public Wrapper<?> insert(@RequestBody D record){
+    public Wrapper<?> insert(@RequestBody E record){
         ExecuteResult<Integer> executeResult = basicService.insert(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
@@ -35,7 +35,7 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/insertSelective",method={RequestMethod.POST})
-    public Wrapper<?> insertSelective(@RequestBody D record){
+    public Wrapper<?> insertSelective(@RequestBody E record){
         ExecuteResult<Integer> executeResult = basicService.insertSelective(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
@@ -44,7 +44,7 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/batchSave",method={RequestMethod.POST})
-    public Wrapper<?> insertSelective(@RequestBody List<D> record){
+    public Wrapper<?> insertSelective(@RequestBody List<E> record){
         ExecuteResult<Integer> executeResult = basicService.batchSave(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
@@ -53,8 +53,8 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/selectByPrimaryKey",method={RequestMethod.POST})
-    public Wrapper<?> selectByPrimaryKey(@RequestBody D record){
-        ExecuteResult<D> executeResult = basicService.selectByPrimaryKey(record);
+    public Wrapper<?> selectByPrimaryKey(@RequestBody E record){
+        ExecuteResult<E> executeResult = basicService.selectByPrimaryKey(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
         }
@@ -62,8 +62,8 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/selectList",method={RequestMethod.POST})
-    public Wrapper<?> selectList(@RequestBody D record){
-        ExecuteResult<DataUtil<D>> executeResult = basicService.selectList(record,record.getPager());
+    public Wrapper<?> selectList(@RequestBody E record){
+        ExecuteResult<DataUtil<E>> executeResult = basicService.selectList(record,record.getPager());
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
         }
@@ -71,7 +71,7 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/updateByPrimaryKeySelective",method={RequestMethod.POST})
-    public Wrapper<?> updateByPrimaryKeySelective(@RequestBody D record){
+    public Wrapper<?> updateByPrimaryKeySelective(@RequestBody E record){
         ExecuteResult<Integer> executeResult = basicService.updateByPrimaryKeySelective(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);
@@ -80,7 +80,7 @@ public class BasicController<T extends BasicDao,D extends BasicDTO> {
     }
 
     @RequestMapping(value = "/updateByPrimaryKey",method={RequestMethod.POST})
-    public Wrapper<?> updateByPrimaryKey(@RequestBody D record){
+    public Wrapper<?> updateByPrimaryKey(@RequestBody E record){
         ExecuteResult<Integer> executeResult = basicService.updateByPrimaryKey(record);
         if(executeResult.isSuccess()){
             return WrapMapper.ok().result(executeResult);

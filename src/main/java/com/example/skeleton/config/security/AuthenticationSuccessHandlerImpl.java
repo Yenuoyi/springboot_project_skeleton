@@ -1,7 +1,8 @@
 package com.example.skeleton.config.security;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.skeleton.common.WrapMapper;
+import com.example.skeleton.common.basicMethod.WrapMapper;
 import com.example.skeleton.dao.UserDao;
 import com.example.skeleton.domain.UserDTO;
 import org.apache.log4j.Logger;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import javax.annotation.Resource;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,16 +31,18 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private UserDao userDao;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+        System.out.print(JSON.toJSONString(UserSecurityContextHolder.getUserDetails()));
         logger.info("Setting session!");
         String username = UserSecurityContextHolder.getUsername();
         UserDTO record = new UserDTO();
         record.setName(username);
         List<UserDTO> userDTOList = userDao.selectList(record, null);
-        Long id  = userDTOList.get(0).getId();
+        Long id = userDTOList.get(0).getId();
 
-        httpServletRequest.getSession().setAttribute("id",id);
+        httpServletRequest.getSession().setAttribute("id", id);
         httpServletRequest.getUserPrincipal();
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();

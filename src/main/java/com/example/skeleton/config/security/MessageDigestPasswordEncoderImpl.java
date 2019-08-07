@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 public class MessageDigestPasswordEncoderImpl implements PasswordEncoder {
     private Logger logger = Logger.getLogger(this.getClass());
 
-
     @Override
     public String encode(CharSequence charSequence) {
         logger.info(charSequence.toString());

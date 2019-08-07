@@ -1,4 +1,4 @@
-package com.example.skeleton.common.CodeUtil;
+package com.example.skeleton.common.codeUtil;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class CodeImageUtilTest {
     public static void main(String[] args) throws IOException {
         CodeImageUtil codeImageUtil = new CodeImageUtil();
-        codeImageUtil.init(120,50);
+        codeImageUtil.init(120, 50);
         BufferedImage bufferedImage = codeImageUtil.getImage();
         File file = new File("E://test.jpg");
         FileOutputStream out = new FileOutputStream(file); // 输出到文件流
