@@ -126,9 +126,23 @@ public class DateUtils {
         Calendar c = Calendar.getInstance();
         c.setTime(times); // 设置当前日期
         c.add(Calendar.HOUR, 1); // 日期分钟加1,Calendar.DATE(天),Calendar.HOUR(小时)
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
         Date date = c.getTime(); // 结果
         return date;
+    }
+
+    /**
+     * 当期日期加一小时
+     */
+    public static Date addHours(Date times, int amount) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(times); // 设置当前日期
+        c.add(Calendar.HOUR, amount); // 日期分钟加1,Calendar.DATE(天),Calendar.HOUR(小时)
+        Date date = c.getTime(); // 结果
+        return date;
+    }
+
+    public static void main(String[] args) {
+        Date date = addHours(new Date());
+        System.out.print(date);
     }
 }

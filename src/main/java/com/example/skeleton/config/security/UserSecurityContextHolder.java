@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component("userSecurityContextHolder")
 public class UserSecurityContextHolder {
-    public static UserDetails getUserDetails() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+    public static UserDetailImpl getUserDetails() {
+        UserDetailImpl userDetails = (UserDetailImpl) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
         return userDetails;
@@ -26,8 +26,8 @@ public class UserSecurityContextHolder {
         return username;
     }
 
-    public static int getUserId(HttpServletRequest httpServletRequest) {
-        int id = Integer.parseInt(httpServletRequest.getSession().getAttribute("id").toString());
+    public static Long getUserId() {
+        long id = getUserDetails().getUserId();
         return id;
     }
 }

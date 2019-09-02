@@ -1,6 +1,8 @@
 package com.example.skeleton.config.security;
 
 import com.example.skeleton.common.Role;
+import com.example.skeleton.common.util.DateUtils;
+import com.example.skeleton.common.util.TokenUtil;
 import com.example.skeleton.dao.UserDao;
 import com.example.skeleton.domain.UserDTO;
 import org.apache.log4j.Logger;
@@ -43,14 +45,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         record.setName(username);
         List<UserDTO> userDTOList = userDao.selectList(record, null);
         /* 数据库有账号*/
-        if(userDTOList.size()!=0 ){
+        if(userDTOList.size()!=0 || userDTOList.size() > 1){
             record = userDTOList.get(0);
             password = record.getPassword();
             logger.info("数据库密码："+record.getName());
         }else{
             throw new UsernameNotFoundException("用户" + username + "不存在");
         }
+        String token = TokenUtil.createToken(username, DateUtils.addHours(new Date()));
         //返回包括权限角色的User给security
-        return new User(username, password, true, true, true, true, auths);
+        return new UserDetailImpl(username, password,token, userDTOList.get(0).getId(), true, true, true, true, auths);
     }
 }
