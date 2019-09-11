@@ -42,6 +42,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()                         //授权配置
+                .antMatchers("/**").permitAll()
                 .antMatchers("/timer/**").permitAll()
                 .antMatchers("/user/selectOne").hasRole(Role.USER)
                 .antMatchers("/admin/languageClassificationController/**").hasAnyRole(Role.ADMIN,Role.USER)

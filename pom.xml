@@ -76,6 +76,14 @@
         </dependency>
         <!-- end 阿里巴巴json解析器 -->
 
+        <!-- 阿里数据库线程池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+
         <!-- Start 分页类 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -137,6 +145,27 @@
             <artifactId>core</artifactId>
             <version>3.3.0</version>
         </dependency>
+
+        <!-- start token  -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.10.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.10.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.10.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- end token -->
+
     </dependencies>
 
     <build>
