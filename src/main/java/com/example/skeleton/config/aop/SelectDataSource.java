@@ -12,5 +12,4 @@ import java.lang.annotation.*;
 @Target({ElementType.PACKAGE, ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 public @interface SelectDataSource {
     DataSourceEnum dataSourceName() default DataSourceEnum.MASTER_DATASOURCE;
-
 }

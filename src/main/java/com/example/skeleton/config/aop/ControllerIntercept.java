@@ -35,6 +35,7 @@ public class ControllerIntercept {
      */
     @Around(value = "aopPointCut()")
     public Object around(ProceedingJoinPoint joinPoint) {
+        System.out.println("环切操作");
         Object proceed = null;
         try {
             Class<?> aClass = joinPoint.getTarget().getClass();
