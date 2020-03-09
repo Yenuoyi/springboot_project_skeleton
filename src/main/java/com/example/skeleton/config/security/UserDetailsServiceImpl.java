@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 功能：动态获取用户账号密码认证
+ * 功能：动态获取数据库用户账号密码用于认证
  * @Author Created by yebing
  * @Date 2018/8/12 22:05
  * @Version 1.0.0
@@ -37,8 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         logger.info("开始处理用户信息！");
         //GrantedAuthority是security提供的权限类，
         List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-        /*暂时写死角色,角色前面必须加ROLE_*/
-        auths.add(new SimpleGrantedAuthority(ROLE_PREFIX+"USER"));
         String password = null;
 
         UserDTO record = new UserDTO();
@@ -48,12 +46,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(userDTOList.size()!=0 || userDTOList.size() > 1){
             record = userDTOList.get(0);
             password = record.getPassword();
-            logger.info("数据库密码："+record.getName());
+            String roleType = null;
+            Role[] roles = Role.values();
+            for (Role role: roles) {
+                if (record.getType() ==role.getId()){
+                    roleType = role.getName();
+                }
+            }
+            /*角色前面必须加ROLE_，这个是用于权限校验 */
+            auths.add(new SimpleGrantedAuthority(ROLE_PREFIX + roleType));
         }else{
             throw new UsernameNotFoundException("用户" + username + "不存在");
         }
         String token = TokenUtil.createToken(username, DateUtils.addHours(new Date()));
         //返回包括权限角色的User给security
-        return new UserDetailImpl(username, password,token, userDTOList.get(0).getId(), true, true, true, true, auths);
+        return new UserDetailImpl(username, password, token, userDTOList.get(0).getId(), true, true, true, true, auths);
     }
 }

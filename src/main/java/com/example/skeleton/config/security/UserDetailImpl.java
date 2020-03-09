@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 /**
+ * 认证完成后写入Spring Security的SecurityContextHolder的用户信息实体
  * @author yebing
  */
 public class UserDetailImpl extends User {

@@ -8,6 +8,8 @@ public class AuthenticationBean {
     private String username;
     private String password;
     private String role;
+    private String loginType;
+    private String code;
 
     public String getUsername() {
         return username;
@@ -31,5 +33,21 @@ public class AuthenticationBean {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

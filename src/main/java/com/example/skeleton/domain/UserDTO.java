@@ -12,6 +12,9 @@ public class UserDTO extends BasicDTO implements Serializable {
 
     private String password;
 
+    private String weChatId;
+
+    private Integer type;
     public String getName() {
         return name;
     }
@@ -26,5 +29,21 @@ public class UserDTO extends BasicDTO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getWeChatId() {
+        return weChatId;
+    }
+
+    public void setWeChatId(String weChatId) {
+        this.weChatId = weChatId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

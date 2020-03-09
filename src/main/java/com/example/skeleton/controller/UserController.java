@@ -24,8 +24,8 @@ public class UserController extends BasicController<UserService,UserDTO> {
     public Wrapper<?> selectOne(@RequestBody UserDTO record){
         ExecuteResult<UserDTO> executeResult = basicService.selectByPrimaryKey(record);
         if(executeResult.isSuccess()){
-            return WrapMapper.ok().result(executeResult);
+            return WrapMapper.ok().result(executeResult.getResult());
         }
-        return WrapMapper.error().result(executeResult);
+        return WrapMapper.error().result(executeResult.getResult());
     }
 }

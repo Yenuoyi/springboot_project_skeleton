@@ -5,11 +5,13 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="we_chat_id" property="weChatId" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, name, password, create_time
+        id, name, password, we_chat_id,type, create_time
     </sql>
 
     <sql id="where_fragement">
@@ -23,6 +25,12 @@
             </if>
             <if test="record.password != null and record.password != ''">
                 and password = #{record.password}
+            </if>
+            <if test="record.weChatId != null and record.weChatId != ''">
+                and we_chat_id = #{record.weChatId}
+            </if>
+            <if test="record.type != null and record.type != ''">
+                and type = #{record.type}
             </if>
             <if test="record.createTime != null and record.createTime != ''">
                 and create_time = #{record.createTime}
@@ -73,8 +81,8 @@
     </delete>
 
     <insert id="insert" parameterType="com.example.skeleton.domain.UserDTO" >
-        insert into user (name,password,create_time)
-        values (#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+        insert into user (name,password,we_chat_id,type,create_time)
+        values (#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{whChatId,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insertSelective" parameterType="com.example.skeleton.domain.UserDTO" >
@@ -86,6 +94,12 @@
             <if test="password != null" >
                 password,
             </if>
+            <if test="weChatId != null" >
+                we_chat_id,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
             <if test="createTime != null" >
                 create_time,
             </if>
@@ -96,6 +110,12 @@
             </if>
             <if test="password != null" >
                 #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="weChatId != null" >
+                #{weChatId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=INTEGER}
             </if>
             <if test="createTime != null" >
                 #{createTime,jdbcType=TIMESTAMP},

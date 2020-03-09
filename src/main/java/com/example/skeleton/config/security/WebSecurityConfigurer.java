@@ -1,8 +1,6 @@
 package com.example.skeleton.config.security;
 
 import com.example.skeleton.common.Role;
-import com.example.skeleton.config.PersonConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
-import java.util.List;
 
 /**
  * @author yebing
@@ -34,7 +30,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
-    private CustomAuthenticationFilter customAuthenticationFilter;
+    private CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -42,11 +38,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()                         //授权配置
-                .antMatchers("/**").permitAll()
+                //.antMatchers("/**").permitAll()
                 .antMatchers("/timer/**").permitAll()
-                .antMatchers("/user/selectOne").hasRole(Role.USER)
-                .antMatchers("/admin/languageClassificationController/**").hasAnyRole(Role.ADMIN,Role.USER)
-                .antMatchers("/admin/**").hasRole(Role.ADMIN)
+                .antMatchers("/user/selectOne").hasAnyRole(Role.ADMIN.getName(),Role.USER.getName(),Role.WE_CHAT.getName())
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.getName())
                 .anyRequest()     // 所有请求
                 .authenticated(); // 所有请求都进行权限
 
@@ -66,9 +61,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
 
         /*权限认证*/
+        http.addFilterAt(customUsernamePasswordAuthenticationFilter, CustomUsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(this.authenticationProvider());
-        http
-                .addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         //自定义登录退出处理器
         http.logout().logoutSuccessHandler(new CustomUrlLogoutSuccessHandlerImpl());
@@ -76,8 +70,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    public CustomDaoAuthenticationProvider authenticationProvider() {
+        /* 权限账户密码认证提供者 */
+        CustomDaoAuthenticationProvider authProvider = new CustomDaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder);
         authProvider.setUserDetailsService(userDetailsService);
         return authProvider;
